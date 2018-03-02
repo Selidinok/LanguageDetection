@@ -1,0 +1,20 @@
+package com.example.android.languagedetection.Network;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
+/**
+ * Created by User on 14:10 01.03.2018.
+ */
+
+/*
+* Интерфейс реализующий запросы к API
+* */
+public interface LanguageApi {
+
+    @GET("/calls/text/TextGetLanguage?outputMode=json")
+    Call<LanguageInfo> getData(@Query("apikey") String apiKey, @Query("text") String text);
+
+
+}

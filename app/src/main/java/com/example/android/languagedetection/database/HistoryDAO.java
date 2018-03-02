@@ -14,6 +14,10 @@ import io.reactivex.Flowable;
  * Created by User on 11:49 28.02.2018.
  */
 
+/*
+* Интерфейс реализующий запросы к БД.
+* Используется Room https://developer.android.com/topic/libraries/architecture/room.html
+* */
 @Dao
 public interface HistoryDAO {
 

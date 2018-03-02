@@ -1,9 +1,9 @@
 package com.example.android.languagedetection;
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,9 +16,8 @@ import com.example.android.languagedetection.database.HistoryDb;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String FRAGMENT_ID = "fragment-id";
     public static HistoryDb db;
-    public static FragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,24 +27,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle(getResources().getString(R.string.new_text_title));
-//        getActionBar().setTitle(getResources().getString(R.string.new_text_title));
-        fragmentManager = getSupportFragmentManager();
 
-//        if (savedInstanceState != null){
-//            int fragmentId = savedInstanceState.getInt(FRAGMENT_ID);
-//            switch (fragmentId){
-//                case 0:
-//                    fragmentManager.beginTransaction()
-//                            .add(R.id.content_view, new NewTextFragment()).commit();
-//                break;
-//                case 1:
-//                    fragmentManager.beginTransaction()
-//                            .add(R.id.content_view, new HistoryFragment()).commit();
-//                    break;
-//                default:
-//                    throw new UnsupportedOperationException("Unknown fragment");
-//            }
-//        } else
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null)
             fragmentManager.beginTransaction()
                 .add(R.id.content_view, new NewTextFragment()).commit();
@@ -60,6 +43,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         db = DatabaseCreator.getPersonDatabase(this);
+
+
     }
 
     @Override
@@ -71,6 +56,10 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
+    /*
+    * Меню настроек не реализованно
+    * */
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,7 +100,9 @@ public class MainActivity extends AppCompatActivity
 
         if (fragment != null){
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_view, fragment).commit();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_view, fragment)
+                    .commit();
             setTitle(title);
         }
 

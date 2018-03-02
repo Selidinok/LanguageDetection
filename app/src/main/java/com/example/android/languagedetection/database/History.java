@@ -8,6 +8,11 @@ import android.arch.persistence.room.PrimaryKey;
  * Created by User on 11:45 28.02.2018.
  */
 
+/*
+* Класс реализующий структуру таблицы с историей запросов.
+* Используется Room https://developer.android.com/topic/libraries/architecture/room.html
+* */
+
 @Entity
 public class History {
     @PrimaryKey(autoGenerate = true)
@@ -16,6 +21,17 @@ public class History {
     private String text;
 
     private String language;
+
+    public History(String text, String language) {
+        this.text = text;
+        this.language = language;
+    }
+
+    @Ignore
+    public History(String text) {
+        this.text = text;
+        this.language = "Unknown";
+    }
 
     public int getId() {
         return id;
@@ -39,16 +55,5 @@ public class History {
 
     public void setLanguage(String language) {
         this.language = language;
-    }
-
-    public History(String text, String language) {
-        this.text = text;
-        this.language = language;
-    }
-
-    @Ignore
-    public History(String text) {
-        this.text = text;
-        this.language = "Unknown";
     }
 }

@@ -19,9 +19,11 @@
         android:id="@+id/tv_language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="@dimen/text_margin"
         android:layout_marginRight="@dimen/text_margin"
-        android:layout_marginBottom="8dp"
-        tools:text="Language"
-        android:textAppearance="?attr/textAppearanceListItem" />
+
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/darker_gray"
+        tools:text="Language" />
 </LinearLayout>

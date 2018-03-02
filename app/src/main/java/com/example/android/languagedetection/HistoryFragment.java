@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 
 import com.example.android.languagedetection.database.History;
 import com.example.android.languagedetection.database.HistoryDb;
-import com.example.android.languagedetection.dummy.DummyContent;
-import com.example.android.languagedetection.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
@@ -26,13 +24,10 @@ import io.reactivex.functions.Consumer;
  */
 public class HistoryFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-
     private static final String FRAGMENT_ID = "fragment-id";
     private static final int ID = 1;
+    private int mColumnCount = 1;
 
 
     /**
@@ -52,7 +47,6 @@ public class HistoryFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-//        setRetainInstance(true);
     }
 
     @Override
@@ -61,12 +55,6 @@ public class HistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
 
         HistoryDb db = MainActivity.db;
-
-//      Рыбный контент, не забыть удалить
-        final History h1 = new History("111gaergeargeargngfx", "english");
-        final History h2 = new History("222онеовеовеноевноонев", "russian");
-        final History h3 = new History("333gaergeaолвеноargngfx", "unknown");
-
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -78,15 +66,12 @@ public class HistoryFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
+//            запрос на получение истории из БД
             db.getHistoryDao().getAll()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Consumer<List<History>>() {
                         @Override
                         public void accept(List<History> histories) throws Exception {
-//                            histories.add(h1);
-//                            histories.add(h2);
-//                            histories.add(h3);
-
                             recyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(histories));
                         }
                     });
@@ -95,8 +80,8 @@ public class HistoryFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(FRAGMENT_ID, ID);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        outState.putInt(FRAGMENT_ID, ID);
+//    }
 }
