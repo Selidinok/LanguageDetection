@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.languagedetection.database.DatabaseCreator;
 import com.example.android.languagedetection.database.History;
 import com.example.android.languagedetection.database.HistoryDb;
 
@@ -54,7 +55,7 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
 
-        HistoryDb db = MainActivity.db;
+        HistoryDb db = DatabaseCreator.getPersonDatabase(getContext());
 
         // Set the adapter
         if (view instanceof RecyclerView) {

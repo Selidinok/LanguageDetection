@@ -51,8 +51,8 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.tv_search_text);
-            mContentView = (TextView) view.findViewById(R.id.tv_language);
+            mIdView = view.findViewById(R.id.tv_search_text);
+            mContentView = view.findViewById(R.id.tv_language);
         }
     }
 }

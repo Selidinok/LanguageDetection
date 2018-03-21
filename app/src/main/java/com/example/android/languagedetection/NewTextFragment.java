@@ -18,16 +18,14 @@ import android.widget.Toast;
 import com.example.android.languagedetection.Network.LanguageApi;
 import com.example.android.languagedetection.Network.LanguageInfo;
 import com.example.android.languagedetection.Network.RetrofitUtils;
+import com.example.android.languagedetection.database.DatabaseCreator;
 import com.example.android.languagedetection.database.History;
 
-import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by User on 15:19 27.02.2018.
@@ -38,13 +36,16 @@ public class NewTextFragment extends Fragment {
     private static final int ID = 0;
     private static final String API_KEY = "4978e60252ae102dfe1341146bb8cc3ec4bbbd78";
     private static final String TAG = NewTextFragment.class.getSimpleName();
-    private final Executor executor = Executors.newFixedThreadPool(2);
+    private static final String IS_DIALOG_SHOWN = "is-dialog-shown";
+    private static final String LANGUAGE_TAG = "language-tag";
+    private static boolean isShowDialog = false;
+    private String language;
     private ProgressBar mLoadingIndicator;
     private EditText mEditText;
+    private Dialog mDialog = null;
 
     public NewTextFragment() {
     }
-
 
 
     @Override
@@ -56,11 +57,17 @@ public class NewTextFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_new_text, container, false);
 
-        mEditText = (EditText) view.findViewById(R.id.edit_text_view);
-        mLoadingIndicator = (ProgressBar) view.findViewById(R.id.pb_loading_indicator);
+        mEditText = view.findViewById(R.id.edit_text_view);
+        mLoadingIndicator = view.findViewById(R.id.pb_loading_indicator);
+
+        if (savedInstanceState != null && savedInstanceState.getBoolean(IS_DIALOG_SHOWN)) {
+            language = savedInstanceState.getString(LANGUAGE_TAG);
+            mDialog = onCreateDialog(language);
+            mDialog.show();
+        }
 
 //      Обработка нажатия кнопки
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
 
             private String language;
@@ -80,42 +87,32 @@ public class NewTextFragment extends Fragment {
 
 //                    Выполняется запрос на сервер
                     LanguageApi languageApi = RetrofitUtils.getRetrofit().create(LanguageApi.class);
-                    final Call<LanguageInfo> call = languageApi.getData(API_KEY, text);
+                    languageApi.getData(API_KEY, text)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new DisposableSingleObserver<LanguageInfo>() {
+                                @Override
+                                public void onSuccess(LanguageInfo languageInfo) {
+                                    Log.d(TAG, languageInfo.toString());
 
-                    call.enqueue(new Callback<LanguageInfo>() {
-                        @Override
-                        public void onResponse(Call<LanguageInfo> call, Response<LanguageInfo> response) {
-                            Log.d(TAG, response.toString());
-                            if (response.isSuccessful()) {
-//                                Если API ответило сообщением об не достатке текста
-                                if (response.body().getStatus().equals("ERROR")) {
-                                    language = "Не достаточно текста, чтобы точно определить язык";
-                                } else {
-                                    language = response.body().getLanguage();
-                                }
-                                openDialog(text, language);
-
-                            } else {
-                                ResponseBody errorBody = response.errorBody();
-                                try {
-                                    Log.d(TAG, errorBody.string());
-                                    String language = errorBody.string();
+//                                      Если API ответило сообщением об не достатке текста
+                                    if (languageInfo.getStatus().equals("ERROR")) {
+                                        language = "Не достаточно текста, чтобы точно определить язык";
+                                    } else {
+                                        language = languageInfo.getLanguage();
+                                    }
                                     openDialog(text, language);
 
-                                } catch (IOException e) {
-                                    e.printStackTrace();
                                 }
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(Call<LanguageInfo> call, Throwable t) {
-                            Log.d(TAG, t.getLocalizedMessage());
-                            language = t.getLocalizedMessage();
-                            openDialog(text, language);
-                        }
 
-                    });
+                                @Override
+                                public void onError(Throwable e) {
+                                    Log.d(TAG, e.getLocalizedMessage());
+                                    language = e.getLocalizedMessage();
+                                    openDialog(text, language);
+                                }
+                            });
                 }
             }
         });
@@ -125,18 +122,24 @@ public class NewTextFragment extends Fragment {
     //    Добавление записи в БД
     private void insert(String text, String language) {
         final History history = new History(text, language);
-        executor.execute(new Runnable() {
+        Completable.fromAction(new Action() {
             @Override
-            public void run() {
-                MainActivity.db.getHistoryDao().add(history);
+            public void run() throws Exception {
+                DatabaseCreator.getPersonDatabase(getContext()).getHistoryDao().add(history);
             }
-        });
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        outState.putInt(FRAGMENT_ID, ID);
-//    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mDialog != null && mDialog.isShowing()) {
+            isShowDialog = true;
+            outState.putBoolean(IS_DIALOG_SHOWN, isShowDialog);
+            outState.putString(LANGUAGE_TAG, language);
+        }
+    }
 
     //    Создание диалогового окна
     public Dialog onCreateDialog(String language) {
@@ -172,9 +175,11 @@ public class NewTextFragment extends Fragment {
 
     //    Вставить запись в базу, потом скрыть индикатор загрузки и открыть диалоговое окно
     private void openDialog(String text, String language) {
+        this.language = language;
         insert(text, language);
         mLoadingIndicator.setVisibility(View.INVISIBLE);
-        onCreateDialog(language).show();
+        mDialog = onCreateDialog(language);
+        mDialog.show();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.example.android.languagedetection.Network;
 
-import retrofit2.Call;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 public interface LanguageApi {
 
     @GET("/calls/text/TextGetLanguage?outputMode=json")
-    Call<LanguageInfo> getData(@Query("apikey") String apiKey, @Query("text") String text);
+    Single<LanguageInfo> getData(@Query("apikey") String apiKey, @Query("text") String text);
 
 
 }
