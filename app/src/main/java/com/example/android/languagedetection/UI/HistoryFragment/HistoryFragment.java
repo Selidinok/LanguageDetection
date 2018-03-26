@@ -1,4 +1,4 @@
-package com.example.android.languagedetection;
+package com.example.android.languagedetection.UI.HistoryFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,25 +10,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.android.languagedetection.database.DatabaseCreator;
+import com.example.android.languagedetection.R;
+import com.example.android.languagedetection.database.DatabaseModel;
 import com.example.android.languagedetection.database.History;
 import com.example.android.languagedetection.database.HistoryDb;
 
 import java.util.List;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
  */
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements HistoryView {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String FRAGMENT_ID = "fragment-id";
     private static final int ID = 1;
     private int mColumnCount = 1;
+    private RecyclerView mRecyclerView;
+
+    private HistoryPresenter presenter;
 
 
     /**
@@ -55,34 +56,36 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
 
-        HistoryDb db = DatabaseCreator.getPersonDatabase(getContext());
+        HistoryDb db = DatabaseModel.getPersonDatabase(getContext());
+
+        presenter = new HistoryPresenter(this);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            final RecyclerView recyclerView = (RecyclerView) view;
+            mRecyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
 //            запрос на получение истории из БД
-            db.getHistoryDao().getAll()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<History>>() {
-                        @Override
-                        public void accept(List<History> histories) throws Exception {
-                            recyclerView.setAdapter(new MyHistoryRecyclerViewAdapter(histories));
-                        }
-                    });
+
+            presenter.loadHistory();
 
         }
         return view;
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        outState.putInt(FRAGMENT_ID, ID);
-//    }
+    @Override
+    public void showHistory(List<History> histories) {
+        MyHistoryRecyclerViewAdapter adapter = new MyHistoryRecyclerViewAdapter(histories);
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(FRAGMENT_ID, ID);
+    }
 }

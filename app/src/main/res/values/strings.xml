@@ -10,4 +10,7 @@
     <string name="edit_text_hint">Введите текст</string>
     <string name="app_title">Language detector</string>
     <string name="app_url">android.studio@android.com</string>
+    <string name="fist_dialog_btn_text">Остаться</string>
+    <string name="second_dialog_btn_text">В историю</string>
+    <string name="dialog_title">Ваш язык:</string>
 </resources>

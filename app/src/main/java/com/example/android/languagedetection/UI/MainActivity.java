@@ -1,4 +1,4 @@
-package com.example.android.languagedetection;
+package com.example.android.languagedetection.UI;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.android.languagedetection.database.DatabaseCreator;
+import com.example.android.languagedetection.R;
+import com.example.android.languagedetection.UI.HistoryFragment.HistoryFragment;
+import com.example.android.languagedetection.UI.NewTextFragment.NewTextFragment;
+import com.example.android.languagedetection.database.DatabaseModel;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,9 +30,11 @@ public class MainActivity extends AppCompatActivity
         setTitle(getResources().getString(R.string.new_text_title));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
-                .add(R.id.content_view, new NewTextFragment()).commit();
+                    .add(R.id.content_view, new NewTextFragment()).commit();
+        }
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DatabaseCreator.getPersonDatabase(this);
+        DatabaseModel.getPersonDatabase(this);
 
 
     }
@@ -96,14 +101,13 @@ public class MainActivity extends AppCompatActivity
             fragment = new HistoryFragment();
         }
 
-        if (fragment != null){
+        if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_view, fragment)
                     .commit();
             setTitle(title);
         }
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
