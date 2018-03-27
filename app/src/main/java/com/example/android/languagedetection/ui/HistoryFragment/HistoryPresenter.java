@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.UI.HistoryFragment;
+package com.example.android.languagedetection.ui.HistoryFragment;
 
 import com.example.android.languagedetection.database.DatabaseModel;
 
@@ -12,16 +12,8 @@ import io.reactivex.schedulers.Schedulers;
 public class HistoryPresenter {
     private HistoryView historyView;
 
-    public HistoryPresenter(HistoryView historyView) {
+    public void attachView(HistoryView historyView) {
         this.historyView = historyView;
-    }
-
-    public void detachHistoryView() {
-        historyView = null;
-    }
-
-    public HistoryView getHistoryView() {
-        return historyView;
     }
 
     public void loadHistory() {

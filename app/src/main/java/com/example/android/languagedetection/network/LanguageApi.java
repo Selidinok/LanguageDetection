@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.Network;
+package com.example.android.languagedetection.network;
 
 import io.reactivex.Single;
 import retrofit2.http.GET;

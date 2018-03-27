@@ -1,11 +1,11 @@
-package com.example.android.languagedetection.UI.NewTextFragment;
+package com.example.android.languagedetection.ui.NewTextFragment;
 
 import android.app.Dialog;
 
-import com.example.android.languagedetection.Network.LanguageApi;
-import com.example.android.languagedetection.Network.LanguageInfo;
-import com.example.android.languagedetection.Network.RetrofitUtils;
 import com.example.android.languagedetection.database.DatabaseModel;
+import com.example.android.languagedetection.network.LanguageApi;
+import com.example.android.languagedetection.network.LanguageInfo;
+import com.example.android.languagedetection.network.RetrofitUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -19,7 +19,7 @@ public class NewTextPresenter {
     private static final String API_KEY = "4978e60252ae102dfe1341146bb8cc3ec4bbbd78";
     private NewTextView view;
 
-    public NewTextPresenter(NewTextView view) {
+    public void attachView(NewTextView view) {
         this.view = view;
     }
 

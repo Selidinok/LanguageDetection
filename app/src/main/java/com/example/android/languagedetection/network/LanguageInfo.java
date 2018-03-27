@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.Network;
+package com.example.android.languagedetection.network;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

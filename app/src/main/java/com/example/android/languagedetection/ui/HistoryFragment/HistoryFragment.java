@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.UI.HistoryFragment;
+package com.example.android.languagedetection.ui.HistoryFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,11 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.languagedetection.R;
-import com.example.android.languagedetection.database.DatabaseModel;
+import com.example.android.languagedetection.app.App;
 import com.example.android.languagedetection.database.History;
-import com.example.android.languagedetection.database.HistoryDb;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * A fragment representing a list of Items.
@@ -24,12 +25,13 @@ import java.util.List;
 public class HistoryFragment extends Fragment implements HistoryView {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final String FRAGMENT_ID = "fragment-id";
-    private static final int ID = 1;
+    private static final String TAG = HistoryFragment.class.getSimpleName();
+    @Inject
+    public HistoryPresenter mPresenter;
+    @Inject
+    public MyHistoryRecyclerViewAdapter mAdapter;
     private int mColumnCount = 1;
     private RecyclerView mRecyclerView;
-
-    private HistoryPresenter presenter;
 
 
     /**
@@ -56,9 +58,11 @@ public class HistoryFragment extends Fragment implements HistoryView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
 
-        HistoryDb db = DatabaseModel.getPersonDatabase(getContext());
+        App.getInstance().getAppComponent().createHistoryFragmentComponent().inject(this);
 
-        presenter = new HistoryPresenter(this);
+        if (getActivity() != null) {
+            getActivity().setTitle(getString(R.string.history_title));
+        }
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -72,20 +76,25 @@ public class HistoryFragment extends Fragment implements HistoryView {
 
 //            запрос на получение истории из БД
 
-            presenter.loadHistory();
+            mPresenter.loadHistory();
 
         }
         return view;
     }
 
+    @Inject
+    void attachView() {
+        mPresenter.attachView(this);
+    }
+
     @Override
     public void showHistory(List<History> histories) {
-        MyHistoryRecyclerViewAdapter adapter = new MyHistoryRecyclerViewAdapter(histories);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter.setValues(histories);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(FRAGMENT_ID, ID);
+        outState.putString(getString(R.string.fragment_id), TAG);
     }
 }

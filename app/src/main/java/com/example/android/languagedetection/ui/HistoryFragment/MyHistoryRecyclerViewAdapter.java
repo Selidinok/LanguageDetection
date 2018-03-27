@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.UI.HistoryFragment;
+package com.example.android.languagedetection.ui.HistoryFragment;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,11 +15,6 @@ import java.util.List;
 public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistoryRecyclerViewAdapter.ViewHolder> {
 
     private List<History> mValues;
-
-
-    public MyHistoryRecyclerViewAdapter(List<History> items) {
-        mValues = items;
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,6 +37,9 @@ public class MyHistoryRecyclerViewAdapter extends RecyclerView.Adapter<MyHistory
         return mValues.size();
     }
 
+    public void setValues(List<History> mValues) {
+        this.mValues = mValues;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;

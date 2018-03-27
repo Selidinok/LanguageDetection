@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.UI;
+package com.example.android.languagedetection.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -12,9 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.android.languagedetection.R;
-import com.example.android.languagedetection.UI.HistoryFragment.HistoryFragment;
-import com.example.android.languagedetection.UI.NewTextFragment.NewTextFragment;
 import com.example.android.languagedetection.database.DatabaseModel;
+import com.example.android.languagedetection.ui.HistoryFragment.HistoryFragment;
+import com.example.android.languagedetection.ui.NewTextFragment.NewTextFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,14 +27,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setTitle(getResources().getString(R.string.new_text_title));
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
                     .add(R.id.content_view, new NewTextFragment()).commit();
+            setTitle(getResources().getString(R.string.new_text_title));
         }
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

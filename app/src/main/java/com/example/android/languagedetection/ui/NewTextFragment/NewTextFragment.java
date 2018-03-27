@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.UI.NewTextFragment;
+package com.example.android.languagedetection.ui.NewTextFragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -15,24 +15,26 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.android.languagedetection.R;
-import com.example.android.languagedetection.UI.HistoryFragment.HistoryFragment;
+import com.example.android.languagedetection.app.App;
+import com.example.android.languagedetection.ui.HistoryFragment.HistoryFragment;
+
+import javax.inject.Inject;
 
 /**
  * Created by User on 15:19 27.02.2018.
  */
 
 public class NewTextFragment extends Fragment implements NewTextView {
+
     private static final String TAG = NewTextFragment.class.getSimpleName();
     private static final String IS_DIALOG_SHOWN = "is-dialog-shown";
     private static final String LANGUAGE_TAG = "language-tag";
-
+    @Inject
+    public NewTextPresenter presenter;
     private ProgressBar mLoadingIndicator;
     private EditText mEditText;
-
     private Dialog mDialog;
     private String language;
-
-    private NewTextPresenter presenter;
 
     public NewTextFragment() {
     }
@@ -49,12 +51,21 @@ public class NewTextFragment extends Fragment implements NewTextView {
         mEditText = view.findViewById(R.id.edit_text_view);
         mLoadingIndicator = view.findViewById(R.id.pb_loading_indicator);
 
-        presenter = new NewTextPresenter(this);
+        App.getInstance().getAppComponent().createNewTextFragmentComponent().inject(this);
+
+        if (getActivity() != null) {
+            getActivity().setTitle(getString(R.string.new_text_title));
+        }
 
 //      Обработка нажатия кнопки
         FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(view1 -> presenter.loadLanguage());
         return view;
+    }
+
+    @Inject
+    void attachView() {
+        presenter.attachView(this);
     }
 
     @Override
@@ -102,6 +113,7 @@ public class NewTextFragment extends Fragment implements NewTextView {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putString(getString(R.string.fragment_id), TAG);
         if (mDialog != null && mDialog.isShowing()) {
             outState.putBoolean(IS_DIALOG_SHOWN, true);
             outState.putString(LANGUAGE_TAG, language);

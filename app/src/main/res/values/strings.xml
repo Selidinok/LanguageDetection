@@ -13,4 +13,5 @@
     <string name="fist_dialog_btn_text">Остаться</string>
     <string name="second_dialog_btn_text">В историю</string>
     <string name="dialog_title">Ваш язык:</string>
+    <string name="fragment_id">fragment-id</string>
 </resources>

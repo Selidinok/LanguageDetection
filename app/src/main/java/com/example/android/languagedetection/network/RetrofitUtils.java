@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.Network;
+package com.example.android.languagedetection.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
