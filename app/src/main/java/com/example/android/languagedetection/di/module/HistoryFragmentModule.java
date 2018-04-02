@@ -1,7 +1,7 @@
-package com.example.android.languagedetection.ui.HistoryFragment.dagger;
+package com.example.android.languagedetection.di.module;
 
-import com.example.android.languagedetection.ui.HistoryFragment.HistoryPresenter;
-import com.example.android.languagedetection.ui.HistoryFragment.MyHistoryRecyclerViewAdapter;
+import com.example.android.languagedetection.ui.historyFragment.HistoryPresenter;
+import com.example.android.languagedetection.ui.historyFragment.MyHistoryRecyclerViewAdapter;
 
 import javax.inject.Singleton;
 

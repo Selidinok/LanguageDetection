@@ -13,8 +13,8 @@ import android.view.MenuItem;
 
 import com.example.android.languagedetection.R;
 import com.example.android.languagedetection.database.DatabaseModel;
-import com.example.android.languagedetection.ui.HistoryFragment.HistoryFragment;
-import com.example.android.languagedetection.ui.NewTextFragment.NewTextFragment;
+import com.example.android.languagedetection.ui.historyFragment.HistoryFragment;
+import com.example.android.languagedetection.ui.newTextFragment.NewTextFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         DatabaseModel.getPersonDatabase(this);
-
 
     }
 

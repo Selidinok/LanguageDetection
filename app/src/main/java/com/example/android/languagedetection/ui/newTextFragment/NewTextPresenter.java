@@ -1,11 +1,13 @@
-package com.example.android.languagedetection.ui.NewTextFragment;
+package com.example.android.languagedetection.ui.newTextFragment;
 
 import android.app.Dialog;
 
+import com.example.android.languagedetection.app.App;
 import com.example.android.languagedetection.database.DatabaseModel;
 import com.example.android.languagedetection.network.LanguageApi;
 import com.example.android.languagedetection.network.LanguageInfo;
-import com.example.android.languagedetection.network.RetrofitUtils;
+
+import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -19,8 +21,16 @@ public class NewTextPresenter {
     private static final String API_KEY = "4978e60252ae102dfe1341146bb8cc3ec4bbbd78";
     private NewTextView view;
 
+    @Inject
+    public LanguageApi languageApi;
+
+    public NewTextPresenter() {
+        App.getInstance().getAppComponent().inject(this);
+    }
+
     public void attachView(NewTextView view) {
         this.view = view;
+
     }
 
     public void loadLanguage() {
@@ -34,7 +44,6 @@ public class NewTextPresenter {
             view.showLoading();
 
 //                    Выполняется запрос на сервер
-            LanguageApi languageApi = RetrofitUtils.getRetrofit().create(LanguageApi.class);
             languageApi.getData(API_KEY, text)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

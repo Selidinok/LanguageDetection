@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.ui.HistoryFragment;
+package com.example.android.languagedetection.ui.historyFragment;
 
 import com.example.android.languagedetection.database.History;
 

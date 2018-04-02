@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.ui.HistoryFragment;
+package com.example.android.languagedetection.ui.historyFragment;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.ui.NewTextFragment;
+package com.example.android.languagedetection.ui.newTextFragment;
 
 import android.app.Dialog;
 

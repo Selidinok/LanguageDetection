@@ -14,7 +14,8 @@ import retrofit2.http.Query;
 public interface LanguageApi {
 
     @GET("/calls/text/TextGetLanguage?outputMode=json")
-    Single<LanguageInfo> getData(@Query("apikey") String apiKey, @Query("text") String text);
+    Single<LanguageInfo> getData(@Query("apikey") String apiKey
+            , @Query("text") String text);
 
 
 }

@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.ui.HistoryFragment;
+package com.example.android.languagedetection.ui.historyFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -58,7 +58,7 @@ public class HistoryFragment extends Fragment implements HistoryView {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);
 
-        App.getInstance().getAppComponent().createHistoryFragmentComponent().inject(this);
+        App.getInstance().getAppComponent().inject(this);
 
         if (getActivity() != null) {
             getActivity().setTitle(getString(R.string.history_title));

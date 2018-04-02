@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.ui.NewTextFragment;
+package com.example.android.languagedetection.ui.newTextFragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.android.languagedetection.R;
 import com.example.android.languagedetection.app.App;
-import com.example.android.languagedetection.ui.HistoryFragment.HistoryFragment;
+import com.example.android.languagedetection.ui.historyFragment.HistoryFragment;
 
 import javax.inject.Inject;
 
@@ -31,6 +31,9 @@ public class NewTextFragment extends Fragment implements NewTextView {
     private static final String LANGUAGE_TAG = "language-tag";
     @Inject
     public NewTextPresenter presenter;
+
+
+
     private ProgressBar mLoadingIndicator;
     private EditText mEditText;
     private Dialog mDialog;
@@ -51,7 +54,7 @@ public class NewTextFragment extends Fragment implements NewTextView {
         mEditText = view.findViewById(R.id.edit_text_view);
         mLoadingIndicator = view.findViewById(R.id.pb_loading_indicator);
 
-        App.getInstance().getAppComponent().createNewTextFragmentComponent().inject(this);
+        App.getInstance().getAppComponent().inject(this);
 
         if (getActivity() != null) {
             getActivity().setTitle(getString(R.string.new_text_title));
