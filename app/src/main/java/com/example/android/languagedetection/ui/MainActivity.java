@@ -10,14 +10,31 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.android.languagedetection.R;
+import com.example.android.languagedetection.app.App;
 import com.example.android.languagedetection.database.DatabaseModel;
 import com.example.android.languagedetection.ui.historyFragment.HistoryFragment;
 import com.example.android.languagedetection.ui.newTextFragment.NewTextFragment;
 
+import javax.inject.Inject;
+
+import ru.terrakok.cicerone.Navigator;
+import ru.terrakok.cicerone.NavigatorHolder;
+import ru.terrakok.cicerone.Router;
+import ru.terrakok.cicerone.android.SupportFragmentNavigator;
+import ru.terrakok.cicerone.commands.Command;
+import ru.terrakok.cicerone.commands.Replace;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    @Inject
+    NavigatorHolder navigatorHolder;
+
+    @Inject
+    Router router;
 
 
     @Override
@@ -28,12 +45,16 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        App.getInstance().getAppComponent().inject(this);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+
+//        FragmentManager fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction()
-                    .add(R.id.content_view, new NewTextFragment()).commit();
+//            fragmentManager.beginTransaction()
+//                    .add(R.id.content_view, new NewTextFragment()).commit();
             setTitle(getResources().getString(R.string.new_text_title));
+
+            router.replaceScreen(Fragments.NEW_TEXT_FRAGMENT);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -46,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         DatabaseModel.getPersonDatabase(this);
+
 
     }
 
@@ -60,8 +82,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     /*
-    * Меню настроек не реализованно
-    * */
+     * Меню настроек не реализованно
+     * */
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,24 +116,64 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
 
         if (id == R.id.new_text) {
-            fragment = new NewTextFragment();
+//            fragment = new NewTextFragment();
+            router.replaceScreen(Fragments.NEW_TEXT_FRAGMENT);
 
         } else if (id == R.id.history) {
-            fragment = new HistoryFragment();
+//            fragment = new HistoryFragment();
+            router.replaceScreen(Fragments.HISTORY_FRAGMENT);
         }
 
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_view, fragment)
-                    .commit();
-            setTitle(title);
-        }
+        setTitle(title);
+
+//        if (fragment != null) {
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.content_view, fragment)
+//                    .commit();
+//            setTitle(title);
+//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigatorHolder.setNavigator(navigator);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        navigatorHolder.removeNavigator();
+    }
+
+    private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),
+            R.id.main_container) {
+        @Override
+        protected Fragment createFragment(String screenKey, Object data) {
+            switch (screenKey) {
+                case Fragments.NEW_TEXT_FRAGMENT:
+                    return new NewTextFragment();
+                case Fragments.HISTORY_FRAGMENT:
+                    return new HistoryFragment();
+                default:
+                    throw new RuntimeException("Unknown string key");
+            }
+        }
+
+            @Override
+            protected void showSystemMessage (String message){
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected void exit() {
+                finish();
+            }
+        };
 
 }

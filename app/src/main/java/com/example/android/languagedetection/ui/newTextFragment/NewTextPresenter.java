@@ -6,12 +6,14 @@ import com.example.android.languagedetection.app.App;
 import com.example.android.languagedetection.database.DatabaseModel;
 import com.example.android.languagedetection.network.LanguageApi;
 import com.example.android.languagedetection.network.LanguageInfo;
+import com.example.android.languagedetection.ui.Fragments;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import ru.terrakok.cicerone.Router;
 
 /**
  * Created by User on 15:31 26.03.2018.
@@ -23,6 +25,9 @@ public class NewTextPresenter {
 
     @Inject
     public LanguageApi languageApi;
+
+    @Inject
+    Router router;
 
     public NewTextPresenter() {
         App.getInstance().getAppComponent().inject(this);
@@ -38,7 +43,8 @@ public class NewTextPresenter {
 
 //                проверка на пустое поле
         if (text.equals("")) {
-            view.showEmptyError();
+//            view.showEmptyError();
+            router.showSystemMessage("Пожалуйста, введите текст");
         } else {
 //                  Показываем индикатор загрузки
             view.showLoading();
@@ -79,5 +85,9 @@ public class NewTextPresenter {
         view.hideLoading();
         Dialog dialog = view.openDialog(language);
         view.setDialog(dialog, language);
+    }
+
+    public void goToHistory(){
+        router.replaceScreen(Fragments.HISTORY_FRAGMENT);
     }
 }

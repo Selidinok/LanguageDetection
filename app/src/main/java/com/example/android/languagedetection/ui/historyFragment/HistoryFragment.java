@@ -30,6 +30,7 @@ public class HistoryFragment extends Fragment implements HistoryView {
     public HistoryPresenter mPresenter;
     @Inject
     public MyHistoryRecyclerViewAdapter mAdapter;
+
     private int mColumnCount = 1;
     private RecyclerView mRecyclerView;
 
@@ -40,7 +41,6 @@ public class HistoryFragment extends Fragment implements HistoryView {
      */
     public HistoryFragment() {
     }
-
 
 
     @Override

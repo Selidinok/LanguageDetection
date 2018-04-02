@@ -59,7 +59,10 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    compile 'ru.terrakok.cicerone:cicerone:1.0'
 }
 repositories {
     mavenCentral()
+
 }

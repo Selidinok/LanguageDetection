@@ -16,9 +16,12 @@ import android.widget.Toast;
 
 import com.example.android.languagedetection.R;
 import com.example.android.languagedetection.app.App;
+import com.example.android.languagedetection.ui.Fragments;
 import com.example.android.languagedetection.ui.historyFragment.HistoryFragment;
 
 import javax.inject.Inject;
+
+import ru.terrakok.cicerone.Router;
 
 /**
  * Created by User on 15:19 27.02.2018.
@@ -29,9 +32,9 @@ public class NewTextFragment extends Fragment implements NewTextView {
     private static final String TAG = NewTextFragment.class.getSimpleName();
     private static final String IS_DIALOG_SHOWN = "is-dialog-shown";
     private static final String LANGUAGE_TAG = "language-tag";
+
     @Inject
     public NewTextPresenter presenter;
-
 
 
     private ProgressBar mLoadingIndicator;
@@ -137,10 +140,11 @@ public class NewTextFragment extends Fragment implements NewTextView {
                 .setMessage(language)
                 .setNegativeButton(btn1String, (dialog, which) -> dialog.cancel())
                 .setPositiveButton(btn2String, (dialog, which) -> {
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.content_view, new HistoryFragment())
-                            .addToBackStack(TAG)
-                            .commit();
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.content_view, new HistoryFragment())
+//                            .addToBackStack(TAG)
+//                            .commit();
+                    presenter.goToHistory();
                     getActivity().setTitle(R.string.history_title);
                 });
 
