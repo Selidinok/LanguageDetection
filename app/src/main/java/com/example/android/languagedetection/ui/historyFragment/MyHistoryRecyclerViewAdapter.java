@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.languagedetection.R;
-import com.example.android.languagedetection.database.History;
+import com.example.android.languagedetection.model.database.History;
 
 import java.util.List;
 

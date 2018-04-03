@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.database;
+package com.example.android.languagedetection.model.database;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;

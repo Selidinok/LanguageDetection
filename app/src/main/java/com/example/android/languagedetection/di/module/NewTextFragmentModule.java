@@ -1,6 +1,7 @@
 package com.example.android.languagedetection.di.module;
 
-import com.example.android.languagedetection.ui.newTextFragment.NewTextPresenter;
+import com.example.android.languagedetection.model.network.LanguageApi;
+import com.example.android.languagedetection.presentation.presenters.NewTextPresenter;
 
 import javax.inject.Singleton;
 
@@ -14,9 +15,21 @@ import dagger.Provides;
 @Module
 public class NewTextFragmentModule {
 
+//    private LanguageApi languageApi;
+//
+//    private Router router;
+//
+//    public NewTextFragmentModule(LanguageApi languageApi, Router router) {
+//        this.languageApi = languageApi;
+//        this.router = router;
+//    }
+
     @Singleton
     @Provides
     NewTextPresenter provideNewTextPresenter() {
-        return new NewTextPresenter();
+        return null;
     }
+
+//    @Provides
+//    public abstract NewTextPresenter provideNewTextPresenter();
 }

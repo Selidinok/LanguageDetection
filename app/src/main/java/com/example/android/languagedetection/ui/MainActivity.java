@@ -3,7 +3,6 @@ package com.example.android.languagedetection.ui;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import com.example.android.languagedetection.R;
 import com.example.android.languagedetection.app.App;
-import com.example.android.languagedetection.database.DatabaseModel;
 import com.example.android.languagedetection.ui.historyFragment.HistoryFragment;
 import com.example.android.languagedetection.ui.newTextFragment.NewTextFragment;
 
@@ -24,8 +22,6 @@ import ru.terrakok.cicerone.Navigator;
 import ru.terrakok.cicerone.NavigatorHolder;
 import ru.terrakok.cicerone.Router;
 import ru.terrakok.cicerone.android.SupportFragmentNavigator;
-import ru.terrakok.cicerone.commands.Command;
-import ru.terrakok.cicerone.commands.Replace;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,7 +62,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DatabaseModel.getPersonDatabase(this);
 
 
     }
@@ -152,7 +147,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private Navigator navigator = new SupportFragmentNavigator(getSupportFragmentManager(),
-            R.id.main_container) {
+            R.id.content_view) {
         @Override
         protected Fragment createFragment(String screenKey, Object data) {
             switch (screenKey) {

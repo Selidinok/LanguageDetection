@@ -1,6 +1,6 @@
 package com.example.android.languagedetection.di.module;
 
-import com.example.android.languagedetection.ui.historyFragment.HistoryPresenter;
+import com.example.android.languagedetection.presentation.presenters.HistoryPresenter;
 import com.example.android.languagedetection.ui.historyFragment.MyHistoryRecyclerViewAdapter;
 
 import javax.inject.Singleton;
@@ -15,11 +15,11 @@ import dagger.Provides;
 @Module
 public class HistoryFragmentModule {
 
-    @Singleton
-    @Provides
-    HistoryPresenter provideHistoryPresenter() {
-        return new HistoryPresenter();
-    }
+//    @Singleton
+//    @Provides
+//    HistoryPresenter provideHistoryPresenter() {
+//        return new HistoryPresenter();
+//    }
 
     @Singleton
     @Provides

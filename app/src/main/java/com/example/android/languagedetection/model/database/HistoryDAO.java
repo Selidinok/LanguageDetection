@@ -1,4 +1,4 @@
-package com.example.android.languagedetection.database;
+package com.example.android.languagedetection.model.database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
